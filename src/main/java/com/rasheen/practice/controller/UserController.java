@@ -2,6 +2,8 @@ package com.rasheen.practice.controller;
 
 import com.rasheen.practice.dto.UserDto;
 import com.rasheen.practice.service.UserService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 
 import jakarta.validation.Valid;
 
@@ -20,8 +22,9 @@ public class UserController {
     }
 
     @PostMapping
-    public UserDto create(@RequestBody @Valid UserDto dto) {
-        return userService.create(dto);
+    public ResponseEntity<UserDto> create(@RequestBody @Valid UserDto dto) {
+        UserDto createdUser = userService.create(dto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(createdUser);
     }
 
     @GetMapping
@@ -43,6 +46,12 @@ public class UserController {
     public void delete(@PathVariable Long id) {
         userService.delete(id);
     }
+
+    @PostMapping("/fail")
+public void createAndFail(@RequestBody @Valid UserDto dto) {
+    userService.createUserWithFailure(dto);
+}
+
 
     @GetMapping("/paged")
 public Object getUsersPaged(
