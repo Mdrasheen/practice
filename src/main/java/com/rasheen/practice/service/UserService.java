@@ -75,6 +75,20 @@ public class UserService {
         userRepository.deleteById(id);
     }
 
+
+    public void createUserWithFailure(UserDto dto) {
+
+    User user = new User();
+    user.setName(dto.getName());
+    user.setEmail(dto.getEmail());
+
+    userRepository.save(user);
+
+    // simulate failure AFTER saving
+    if (true) {
+        throw new RuntimeException("Something went wrong after saving user");
+    }
+}
     // PAGINATION
     public Page<UserDto> getUsersPaged(int page, int size, String sortBy) {
 
